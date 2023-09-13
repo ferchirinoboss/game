@@ -1,0 +1,9 @@
+--> JUMPING MOTION
+When jump button is pressed, sets Jump variable to true.
+When jump variable is true, Y velocity * 3 is subtracted from y, which moves character upwards.
+Then it subtracts 1 to Y velocity, and runs again the loop.
+The total height gained during the jump is the sum of all results from multiplying by 3, numbers from 1 to the value of
+    Jump velocity, in this case, 10.
+Once we get to 0, loop will keep subtracting into negative numbers, which will begin to move down the character.
+Once Y velocity is equal to its negative original value, jump is false.
+

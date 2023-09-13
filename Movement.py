@@ -42,6 +42,8 @@ class Main:
 
             Input = pygame.key.get_pressed()
             character.movement(Input)
+            character.jump_cooldown()
+            character.fall()
             character.jump_motion(Input)
             self.game_clock()
             self.draw()
@@ -53,13 +55,16 @@ class GenericMainCharacter:
         self.x = x
         self.y = y
         self.velx = velocity
+        self.velxholder = velocity
         self.width = width
         self.height = height
         self.jump = False
-        # Modified Y velocity, and static Y velocity
-        # Used to set back modified Y velocity to its original value
         self.mod_yvel = velY
         self.yvel = velY
+        self.jumpCD = 0
+        self.cooldown = False
+        self.fell = False
+        self.xtest = -1
 
     def draw(self, screen, color):
         pygame.draw.rect(screen, color, (self.x, self.y, self.width, self.height))
@@ -71,18 +76,36 @@ class GenericMainCharacter:
         if key[pygame.K_d] and self.x < Screen.width - self.width:
             self.x += self.velx
 
+    def fall(self):
+        # Slows down character for a few frames after jump
+        if self.fell is True:
+            self.velx = 0
+        if self.velx < self.velxholder:
+            self.velx += 0.2
+        self.fell = False
+
+    def jump_cooldown(self):
+        # Sets a cooldown of 60 frames to the jump
+        if self.cooldown is True:
+            self.jumpCD += 1
+            if self.jumpCD >= 60:
+                self.jumpCD = 0
+                self.cooldown = False
+
     def jump_motion(self, key):
         # Explanations, JUMPING MOTION (line 1)
-        if self.jump is False and key[pygame.K_SPACE]:
+        if self.jump is False and key[pygame.K_SPACE] and self.cooldown is False:
             self.jump = True
+            self.cooldown = True
         if self.jump is True:
             self.y -= self.mod_yvel * 3
             self.mod_yvel -= 1
         if self.mod_yvel < -self.yvel:
             self.jump = False
+            self.fell = True
             self.mod_yvel = self.yvel
 
 
 Screen = Main()
-character = GenericMainCharacter(300, 260, 10, 20, 40, 8)
+character = GenericMainCharacter(300, 260, 7, 20, 40, 8)
 Screen.run()
