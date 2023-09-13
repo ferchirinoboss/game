@@ -84,7 +84,7 @@ class GenericMainCharacter:
             self.jump = False
             self.mod_yvel = self.yvel
     
-# create doors 
+# Create doors 
 class Doors:
     def __init__(self, width, height):
         self.width = width
