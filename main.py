@@ -1,4 +1,5 @@
 import pygame
+from collisions import check_collision
 pygame.init()
 
 white = (255, 255, 255)
@@ -7,6 +8,10 @@ blue = (0, 0, 255)
 
 clock = pygame.time.Clock()
 
+# CHANGES 
+# creation of door class 
+# creation of a collision func on a separate file 
+# doors change color if they are colliding with the player and the user press e 
 
 class Main:
     # Class containing the game loop and screen specifications
@@ -29,7 +34,7 @@ class Main:
 
         # Check collisions with doors
         for door in doors_instance:
-            door.check_collision()
+            door.collision(self.Input)
 
                 
         clock.tick(60)
@@ -52,9 +57,11 @@ class Main:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
 
-            Input = pygame.key.get_pressed()
-            character.movement(Input)
-            character.jump_motion(Input)
+            self.Input = pygame.key.get_pressed()
+            character.movement(self.Input)
+            character.jump_motion(self.Input)
+
+
             self.game_clock()
             self.draw()
 
@@ -103,23 +110,22 @@ class Doors():
         self.width = width
         self.height = height
 
+    # Draw the door 
     def draw(self, screen, color, x, y):
         self.x = x
         self.y = y
         self.color = color 
         self.collide_color = (255,0,0)
-        self.screen = screen
-        
-        
+        self.screen = screen   
         
         self.door = pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 5)
 
-    def check_collision(self):
-        # Get the player rect 
+    # Checks collisions 
+    def collision(self, key):
         player = character.return_rect()
 
-        # Actions to do if collision is True 
-        if player.colliderect(self.door):
+        # Actions to do if collisions are True 
+        if check_collision(self.door, player) and key[pygame.K_e]:
             self.door = pygame.draw.rect(self.screen, self.collide_color, (self.x, self.y, self.width, self.height), 5)
         else: 
             self.door = pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height), 5)
