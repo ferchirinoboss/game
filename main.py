@@ -102,7 +102,7 @@ class GenericMainCharacter:
         if self.jump is False and key[pygame.K_SPACE]:
             self.jump = True
         if self.jump is True:
-            self.y -= self.mod_yvel * 3
+            self.player_rect.y -= self.mod_yvel * 3
             self.mod_yvel -= 1
         if self.mod_yvel < -self.yvel:
             self.jump = False
