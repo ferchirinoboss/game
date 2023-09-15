@@ -12,6 +12,7 @@ clock = pygame.time.Clock()
 # creation of door class 
 # creation of a collision func on a separate file 
 # doors change color if they are colliding with the player and the user press e 
+# Added the player image and modified its size to (128,128) when creating the character instance  
 
 class Main:
     # Class containing the game loop and screen specifications
@@ -26,8 +27,6 @@ class Main:
         self.Screen.fill(white)
         pygame.draw.rect(self.Screen, black, (0, 300, self.width, 100))
 
-        character.draw(self.Screen, blue)
-
         # Draw doors 
         doors_instance[0].draw(self.Screen, black, 100, 150)
         doors_instance[1].draw(self.Screen, black, 600, 150)
@@ -36,6 +35,8 @@ class Main:
         for door in doors_instance:
             door.collision(self.Input)
 
+        # Draw player 
+        self.Screen.blit(character.image, character.player_rect)
                 
         clock.tick(60)
         pygame.display.update()
@@ -80,18 +81,21 @@ class GenericMainCharacter:
         self.mod_yvel = velY
         self.yvel = velY
 
-    def draw(self, screen, color):
-        self.player= pygame.draw.rect(screen, color, (self.x, self.y, self.width, self.height))
+        # Import PLAYER IDLE
+        self.player_idle_0= pygame.image.load('player_idle_0.png').convert_alpha()
+        self.image= pygame.transform.scale(self.player_idle_0, (self.width, self.height))
+        self.player_rect= self.image.get_rect(midbottom= (self.x, self.y))
+        
 
     def return_rect(self):
-        return self.player
+        return self.player_rect
 
     def movement(self, key):
         # Moving left and right
-        if key[pygame.K_a] and self.x > 0:
-            self.x -= self.velx
-        if key[pygame.K_d] and self.x < Screen.width - self.width:
-            self.x += self.velx
+        if key[pygame.K_a] and self.player_rect.x > 0:
+            self.player_rect.x -= self.velx
+        if key[pygame.K_d] and self.player_rect.x < Screen.width - self.width:
+            self.player_rect.x += self.velx
 
     def jump_motion(self, key):
         # Explanations, JUMPING MOTION (line 1)
@@ -132,6 +136,6 @@ class Doors():
             
 
 Screen = Main()
-character = GenericMainCharacter(300, 260, 10, 20, 40, 8)
+character = GenericMainCharacter(400, 310, 10, 128, 128, 8)
 doors_instance = [Doors(100, 155), Doors(100, 155)]
 Screen.run()
