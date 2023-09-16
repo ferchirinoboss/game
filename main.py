@@ -40,7 +40,7 @@ class Main:
                 
         clock.tick(60)
         pygame.display.update()
-        
+
 
     def game_clock(self):
         # Creates a variable that counts fps
@@ -70,8 +70,6 @@ class Main:
 class GenericMainCharacter:
     # Creates blue rectangle with movement
     def __init__(self, x, y, velocity, width, height, velY):
-        self.x = x
-        self.y = y
         self.velx = velocity
         self.width = width
         self.height = height
@@ -83,9 +81,8 @@ class GenericMainCharacter:
 
         # Import PLAYER IDLE
         self.player_idle_0= pygame.image.load('player_idle_0.png').convert_alpha()
-        self.image= pygame.transform.scale(self.player_idle_0, (self.width, self.height))
-        self.player_rect= self.image.get_rect(midbottom= (self.x, self.y))
-        
+        self.image = pygame.transform.scale(self.player_idle_0, (self.width, self.height))
+        self.player_rect = self.image.get_rect(midbottom=(x, y))
 
     def return_rect(self):
         return self.player_rect
@@ -114,28 +111,28 @@ class Doors():
         self.width = width
         self.height = height
 
-    # Draw the door 
+    # Draw the door
     def draw(self, screen, color, x, y):
         self.x = x
         self.y = y
-        self.color = color 
+        self.color = color
         self.collide_color = (255,0,0)
-        self.screen = screen   
-        
+        self.screen = screen
         self.door = pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 5)
 
     # Checks collisions 
     def collision(self, key):
         player = character.return_rect()
-
         # Actions to do if collisions are True 
         if check_collision(self.door, player) and key[pygame.K_e]:
-            self.door = pygame.draw.rect(self.screen, self.collide_color, (self.x, self.y, self.width, self.height), 5)
+            self.door = pygame.draw.rect(self.screen, self.collide_color,
+                                         (self.x, self.y, self.width, self.height), 5)
         else: 
-            self.door = pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height), 5)
+            self.door = pygame.draw.rect(self.screen, self.color,
+                                         (self.x, self.y, self.width, self.height), 5)
             
 
 Screen = Main()
-character = GenericMainCharacter(400, 310, 10, 128, 128, 8)
+character = GenericMainCharacter(400, 300, 10, 60, 96, 8)
 doors_instance = [Doors(100, 155), Doors(100, 155)]
 Screen.run()
