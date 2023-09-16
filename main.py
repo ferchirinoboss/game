@@ -28,8 +28,8 @@ class Main:
         pygame.draw.rect(self.Screen, black, (0, 300, self.width, 100))
 
         # Draw doors 
-        doors_instance[0].draw(self.Screen, black, 100, 120)
-        doors_instance[1].draw(self.Screen, black, 600, 120)
+        doors_instance[0].draw(self.Screen, black, 100, 140)
+        doors_instance[1].draw(self.Screen, black, 600, 140)
 
         # Check collisions with doors
         for door in doors_instance:
@@ -136,6 +136,6 @@ class Doors():
             
 
 Screen = Main()
-character = GenericMainCharacter(400, 300, 10, 100, 160, 8)
-doors_instance = [Doors(120, 180), Doors(120, 180)]
+character = GenericMainCharacter(400, 300, 10, 60, 96, 8)
+doors_instance = [Doors(100, 160), Doors(100, 160)]
 Screen.run()
